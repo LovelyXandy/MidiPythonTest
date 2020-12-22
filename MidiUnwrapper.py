@@ -63,12 +63,12 @@ for noteEvent in listTrackData:
             noteList.append(noteEvent)
 
 print(len(noteList))
-
-for i, j in zip(noteList, noteList[1:]):
+playUntil = 0
+for i in noteList:
+    if(i["abs"] < playUntil):
+    	next
+    if(minPause <= ((i["abs"]-playUntil)*toms)):
+        outputFile.write("basic.pause("+str((i["abs"]-playUntil)*toms)+")\n")
     if(int(i["note"]) >= minNote):
         outputFile.write("music.play_tone(" + str(int(f(int(i["note"])))) + ", " + str(int(i["duration"])*toms) + ")\n")
-
-    if(minPause <= ((j["abs"]-i["abs"])*toms)):
-        outputFile.write("basic.pause("+str((j["abs"]-i["abs"])*toms)+")\n")
-
 outputFile.close()
