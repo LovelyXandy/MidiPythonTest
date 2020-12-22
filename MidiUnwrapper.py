@@ -8,10 +8,11 @@ outputFile = open("output.txt", mode="w")
 g = 2**(1/12)
 f = lambda midi: 440*g**(midi-69)
 #    freq = f(midi)
-toms = 2
+toms = 3
 defDuration = 100
 minNote = 0
 minPause = 0
+minVelocity = 5
 
 listTrackData = []
 position = 0
@@ -67,8 +68,9 @@ playUntil = 0
 for i in noteList:
     if(i["abs"] < playUntil):
     	next
-    if(minPause <= ((i["abs"]-playUntil)*toms)):
-        outputFile.write("basic.pause("+str((i["abs"]-playUntil)*toms)+")\n")
-    if(int(i["note"]) >= minNote):
+    if(int(i["note"]) >= minNote and int(i["velocity"]) >= minVelocity):
+        if(minPause <= ((i["abs"]-playUntil)*toms)):
+            outputFile.write("basic.pause("+str((i["abs"]-playUntil)*toms)+")\n")
         outputFile.write("music.play_tone(" + str(int(f(int(i["note"])))) + ", " + str(int(i["duration"])*toms) + ")\n")
+        playUntil = i["abs"] + i["duration"]
 outputFile.close()
